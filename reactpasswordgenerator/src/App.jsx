@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import './App.css'
 
 function App() {
@@ -7,6 +7,26 @@ function App() {
   const [charAllowed, setCharAllowed] = useState(false)
   const [password, setPassword] = useState('')
 
+  const generatePassword = useCallback(() => {
+    let pass = ''
+    let str = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    if(numberAllowed) str += '0123456789'
+    if(charAllowed) str += '!@#$%^&*()_+'
+
+    for(let i = 0; i < length; i++) {
+      const char = Math.floor(Math.random() * str.length + 1)
+      pass += str.charAt(char)
+    }
+    setPassword(pass)
+  }, [length, numberAllowed, charAllowed])
+
+  useEffect(() => {
+    generatePassword()
+  }, [length, numberAllowed, charAllowed])
+
+  const copyPasswordToClipboard = () => {
+    window.navigator.clipboard.writeText(password)
+  }
 
   return (
     <>
@@ -16,11 +36,11 @@ function App() {
           <input
           type="text"
           value={password}
-          className='outline-none w-full py-1 px-3'
+          className='outline-none w-full py-1 px-3 bg-white'
           placeholder='Password'
           readOnly
           />
-          <button className='outline-none bg-blue-700 text-white px-3 py-0.5 shrink-0'>copy</button>
+          <button onClick={copyPasswordToClipboard} className='outline-none bg-blue-700 text-white px-3 py-0.5 shrink-0'>copy</button>
         </div>
 
         <div className='flex text-sm gap-x-2'>
@@ -48,6 +68,18 @@ function App() {
             id=""
             />
             <label htmlFor="number">Numbers</label>
+          </div>
+          <div className='flex items-center gap-x-1'>
+            <input
+            type="checkbox"
+            defaultChecked={charAllowed}
+            onChange={() => {
+              setCharAllowed(prev => !prev)
+            }}
+            name=""
+            id=""
+            />
+            <label htmlFor="charInput">Character</label>
           </div>
         </div>
       </div>
