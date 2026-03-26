@@ -1,7 +1,4 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
 import './App.css'
 
 function App() {
@@ -9,6 +6,7 @@ function App() {
   const [numberAllowed, setNumberAllowed] = useState(false)
   const [charAllowed, setCharAllowed] = useState(false)
   const [password, setPassword] = useState('')
+
 
   return (
     <>
@@ -22,7 +20,35 @@ function App() {
           placeholder='Password'
           readOnly
           />
-          <button>copy</button>
+          <button className='outline-none bg-blue-700 text-white px-3 py-0.5 shrink-0'>copy</button>
+        </div>
+
+        <div className='flex text-sm gap-x-2'>
+          <div className='flex items-center gap-x-1'>
+            <input
+            type="range"
+            min={6}
+            max={100}
+            value={length}
+            className='cursor-pointer'
+            onChange={(e) => setLength(e.target.value)}
+            name=""
+            id=""
+            />
+            <label htmlFor="length">Length: {length}</label>
+          </div>
+          <div className='flex items-center gap-x-1'>
+            <input
+            type="checkbox"
+            defaultChecked={numberAllowed}
+            onChange={() => {
+              setNumberAllowed(prev => !prev)
+            }}
+            name=""
+            id=""
+            />
+            <label htmlFor="number">Numbers</label>
+          </div>
         </div>
       </div>
     </>
